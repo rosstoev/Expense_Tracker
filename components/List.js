@@ -13,7 +13,7 @@ function List({ data, navigation }) {
         <Pressable style={styles.pressableContainer} onPress={sectionPressHandler.bind(this, element.id)} android_ripple={{color: "#6349d6"}}>
           <View>
               <Text style={styles.text}>{element.title}</Text>
-              <Text style={styles.text}>{`${element.date.getDate()}.${element.date.getMonth()}.${element.date.getFullYear()}`}</Text>
+              <Text style={styles.text}>{`${element.date.getDate()}.${element.date.getMonth() + 1}.${element.date.getFullYear()}`}</Text>
           </View>
           <View style={styles.priceContainer}>
               <PriceText style={styles.priceText}>{element.price}</PriceText>
