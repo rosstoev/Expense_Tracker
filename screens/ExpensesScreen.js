@@ -5,17 +5,13 @@ import TotalSection from "../components/TotalSection";
 import List from "../components/List";
 import IconButton from "../components/ui/IconButton";
 import { ExpenseContext } from "../store/expenseContext";
+import { getLastDaysDate } from "../util/date";
 
 function ExpensesScreen({route, navigation}) {
   const {recent} = route.params;
   const expenseContext = useContext(ExpenseContext);
   const expenses = expenseContext.expenses;
-  
-  const recentDate = new Date();
-  recentDate.setDate(-6);
-  recentDate.setUTCHours(0);
-  recentDate.setUTCMinutes(0);
-  recentDate.setUTCSeconds(0);
+  const recentDate = getLastDaysDate(new Date(), 7);
 
   function iconPressHandler() {
     navigation.navigate('ManageExpenses')

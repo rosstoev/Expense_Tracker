@@ -1,46 +1,55 @@
-import { createContext, useState } from "react";
+import { createContext, useReducer } from "react";
 
 import { EXPENSES } from "../data/expenses";
-import { executeNativeBackPress } from "react-native-screens";
 
 export const ExpenseContext = createContext({
   expenses: [],
   addExpense: (expense) => {},
   removeExpense: (id) => {},
-  updateExpense: (id) => {}
+  updateExpense: (id, expense) => {},
 });
 
+function reducer(state, action) {
+  switch (action.type) {
+    case "add":
+      return [...state, action.expense];
+    case "edit":
+      let index = state.findIndex(function (expense) {
+        return expense.id == action.id;
+      });
+
+      const updatedExpense = action.expense;
+      const updateExpenses = [...state];
+      updateExpenses[index] = updatedExpense;
+      return updateExpenses;
+    case "delete":
+      return state.filter((element) => element.id != action.id);
+    default:
+      return false;
+  }
+}
+
 function ExpenseContextProvider({ children }) {
-  const [expenses, setExpenses] = useState(EXPENSES);
+  const [state, dispatch] = useReducer(reducer, EXPENSES);
 
   function addExpense(expense) {
-    setExpenses((currentExpenses) => [...currentExpenses, expense]);
+    dispatch({ type: "add", expense: expense });
   }
 
   function removeExpense(id) {
-    setExpenses((currentExpenses) =>
-      currentExpenses.filter((element) => element.id != id)
-    );
+    dispatch({ type: "delete", id: id });
   }
 
-  function updateExpense(id) {
-
-      setExpenses((currentExpenses) => {
-        let index = currentExpenses.findIndex(function(expense) {
-          return expense.id == id;
-        })
-
-        currentExpenses[index].date = new Date();
-        return currentExpenses;
-      })
+  function updateExpense(id, expense) {
+    dispatch({type: "edit", id: id, expense: expense})
   }
 
   const value = {
-    expenses: expenses,
+    expenses: state,
     addExpense: addExpense,
     removeExpense: removeExpense,
-    updateExpense: updateExpense
-  }
+    updateExpense: updateExpense,
+  };
 
   return (
     <ExpenseContext.Provider value={value}>{children}</ExpenseContext.Provider>

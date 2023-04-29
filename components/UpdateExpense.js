@@ -9,7 +9,7 @@ function UpdateExpense({ expenseId, navigation }) {
 
   function onPressUpdateHandler(expenseId) {
     expenseContex.updateExpense(expenseId);
-    navigation.navigate("Recent");
+    navigation.goBack();
   }
 
   function onPressCancelHandler() {
@@ -18,7 +18,7 @@ function UpdateExpense({ expenseId, navigation }) {
 
   function onPressDeleteHandler(expenseId) {
     expenseContex.removeExpense(expenseId);
-    navigation.navigate("Recent");
+    navigation.goBack();
   }
 
   return (
