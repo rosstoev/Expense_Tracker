@@ -1,12 +1,11 @@
 import { createContext, useReducer } from "react";
 
-import { EXPENSES } from "../data/expenses";
-
 export const ExpenseContext = createContext({
   expenses: [],
   addExpense: (expense) => {},
   removeExpense: (id) => {},
   updateExpense: (id, expense) => {},
+  setExpenses: (expenses) => {}
 });
 
 function reducer(state, action) {
@@ -24,14 +23,15 @@ function reducer(state, action) {
       return updateExpenses;
     case "delete":
       return state.filter((element) => element.id != action.id);
+    case "set":
+      return [...action.payload];
     default:
       return false;
   }
 }
 
 function ExpenseContextProvider({ children }) {
-  const [state, dispatch] = useReducer(reducer, EXPENSES);
-
+  const [state, dispatch] = useReducer(reducer, []);
   function addExpense(expense) {
     dispatch({ type: "add", expense: expense });
   }
@@ -44,11 +44,16 @@ function ExpenseContextProvider({ children }) {
     dispatch({type: "edit", id: id, expense: expense})
   }
 
+  function setExpenses(expenses) {
+    dispatch({type: "set", payload: expenses})
+  }
+
   const value = {
     expenses: state,
     addExpense: addExpense,
     removeExpense: removeExpense,
     updateExpense: updateExpense,
+    setExpenses: setExpenses
   };
 
   return (

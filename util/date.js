@@ -8,6 +8,7 @@ export function getMidnightDate(day, month, year) {
         date.setUTCHours(0);
         date.setUTCMinutes(0);
         date.setUTCSeconds(0);
+        date.setUTCMilliseconds(0);
         date.setDate(day);
         date.setUTCMonth(parseInt(month) - 1);
         date.setFullYear(year);

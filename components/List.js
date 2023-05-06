@@ -8,6 +8,10 @@ function List({ data, navigation }) {
     navigation.navigate('ManageExpenses', {expenseId: id})
   }
 
+  if (data.length == 0) {
+    return <Text style={styles.emptyDataText}>There is no data</Text>
+  }
+
   return data.map((element) => (
       <View style={styles.mainContainer} key={element.id}>
         <Pressable style={styles.pressableContainer} onPress={sectionPressHandler.bind(this, element.id)} android_ripple={{color: "#6349d6"}}>
@@ -56,5 +60,9 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     alignItems: "center",
     justifyContent: "center"
+  },
+  emptyDataText: {
+    color: "white",
+    padding: 20
   }
 });
